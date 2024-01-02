@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   //created a state to store all our input values
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     // so here what we are doing is we are keeping the previous inserted value and then inserting a new one
@@ -20,7 +21,7 @@ function Signup() {
     e.preventDefault();
     try {
       setLoading(true);
-      setError(false)
+      setError(false);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -31,7 +32,7 @@ function Signup() {
 
       //converting response to json
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       setLoading(false);
       setError(false);
 
@@ -43,6 +44,7 @@ function Signup() {
 
       setError(false);
 
+      navigate("/sign-in");
     } catch (error) {
       setLoading(false);
       setError(true);
@@ -74,7 +76,10 @@ function Signup() {
           className="bg-slate-100 rounded-lg p-3"
           onChange={handleChange}
         />
-        <button disabled={loading} className="bg-slate-700 rounded-lg p-3 text-white uppercase hover:opacity-95 disabled:opacity-80">
+        <button
+          disabled={loading}
+          className="bg-slate-700 rounded-lg p-3 text-white uppercase hover:opacity-95 disabled:opacity-80"
+        >
           {loading ? "loading..." : "Sign up"}
         </button>
       </form>
@@ -85,7 +90,7 @@ function Signup() {
           <span className="text-blue-500">sign in</span>
         </Link>
       </div>
-      <p className='text-red-700'>{error && "something went wrong"}</p>
+      <p className="text-red-700">{error && "something went wrong"}</p>
     </div>
   );
 }
