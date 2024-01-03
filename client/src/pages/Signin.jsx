@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Signin() {
   //created a state to store all our input values
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     // so here what we are doing is we are keeping the previous inserted value and then inserting a new one
@@ -20,8 +26,7 @@ function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      setError(false);
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -32,20 +37,16 @@ function Signin() {
 
       //converting response to json
       const data = await res.json();
-      setLoading(false);
-      setError(false);
 
       if (data.success === false) {
-        setLoading(false);
-        setError(true);
+        dispatch(signInFailure(data));
         return;
       }
 
-      setError(false);
+      dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
-      setLoading(false);
-      setError(true);
+      dispatch(signInFailure(error));
     }
   };
 
@@ -81,7 +82,9 @@ function Signin() {
           <span className="text-blue-500">sign up</span>
         </Link>
       </div>
-      <p className="text-red-700">{error && "something went wrong"}</p>
+      <p className="text-red-700">
+        {error ? error.message || "something went wrong" : ""}
+      </p>
     </div>
   );
 }
