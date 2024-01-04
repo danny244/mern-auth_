@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 function Signup() {
   //created a state to store all our input values
@@ -82,11 +83,12 @@ function Signup() {
         >
           {loading ? "loading..." : "Sign up"}
         </button>
+        <OAuth />
       </form>
 
       <div className="flex gap-2 mt-5">
         <p>Have an account?</p>
-        <Link>
+        <Link to="sign-in">
           <span className="text-blue-500">sign in</span>
         </Link>
       </div>
