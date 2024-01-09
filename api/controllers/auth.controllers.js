@@ -93,7 +93,6 @@ export const google = async (req, res, next) => {
     next(error);
   }
 };
-
 // export const google = async (req, res, next) => {
 //   try {
 //     const user = await User.findOne({ email: req.body.email });
@@ -143,3 +142,7 @@ export const google = async (req, res, next) => {
 // };
 //this will out put undefined in the console with out us using [ app.use(express.json()) ]
 // console.log(req.body);
+
+export const signout = async (req, res) => {
+  res.clearCookie("access_token").status(200).json("signout success");
+};
