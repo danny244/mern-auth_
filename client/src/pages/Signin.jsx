@@ -80,7 +80,7 @@ function Signin() {
 
       <div className="flex gap-2 mt-5">
         <p>Dont have an account?</p>
-        <Link to="sigh-up">
+        <Link to="/sign-up">
           <span className="text-blue-500">sign up</span>
         </Link>
       </div>
